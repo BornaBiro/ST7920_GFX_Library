@@ -1,4 +1,4 @@
-#include "ST7920.h"
+#include "ST7920_GFX_Library.h"
 #include "Adafruit_GFX.h"
 #include <SPI.h>
 
