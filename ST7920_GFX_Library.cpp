@@ -4,7 +4,7 @@
 #include "Adafruit_GFX.h"
 #include "ST7920_GFX_Library.h"
 
-uint8_t buff[1024];		//This array serves as primitive "Video RAM" buffer
+uint8_t buff[1024] __attribute__ ((aligned (4)));		//This array serves as primitive "Video RAM" buffer.  Ensure it's 32-bit aligned.
 
 //This display is split into two halfs. Pages are 16bit long and pages are arranged in that way that are lied horizontaly instead of verticaly, unlike SSD1306 OLED, Nokia 5110 LCD, etc.
 //After 8 horizonral page is written, it jumps to half of the screen (Y = 32) and continues until 16 lines of page have been written. After that, we have set cursor in new line.
@@ -42,7 +42,7 @@ void ST7920::begin(void) {
 }
 
 void ST7920::clearDisplay() {
-  	long* p = (long*)&buff;
+  	uint32_t* p = (uint32_t*)&buff;
   	for (int i = 0; i < 256; i++) {
     	p[i] = 0;
   	}
@@ -66,7 +66,7 @@ void ST7920::display() {
 }
 
 void ST7920::invertDisplay() {
-  	long* p = (long*)&buff;
+  	uint32_t* p = (uint32_t*)&buff;
   	for(int i = 0; i<256; i++) {
     	p[i] = ~p[i];
   	}
